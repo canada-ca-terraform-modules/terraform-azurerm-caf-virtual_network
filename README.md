@@ -6,7 +6,7 @@ Reference the module to a specific version (recommended):
 
 ```hcl
 module Project-vnet {
-  source            = "./vnet"
+  source            = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-virtual_network?ref=v1.0.0"
   env               = var.env
   userDefinedString = "${var.group}_${var.project}"
   resource_group    = local.resource_groups_L1.Network
