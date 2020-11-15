@@ -13,3 +13,7 @@ variable "tags" {
     "Owner"             = "cloudteam@tpsgc-pwgsc.gc.ca"
   }
 }
+
+variable "env" {
+  default = "ScTc"
+}
