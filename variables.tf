@@ -34,3 +34,9 @@ variable "tags" {
   description = "Tags to be applied to the AKV to be created"
   type        = map(string)
 }
+
+variable "encryption_enforcement" {
+ type = string
+ description = "Set the encryption enforcement for the virtual network."
+ default = null 
+}

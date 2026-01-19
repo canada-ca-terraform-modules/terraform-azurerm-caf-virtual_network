@@ -5,4 +5,11 @@ resource azurerm_virtual_network vnet {
   address_space         = var.address_space
   dns_servers           = var.dns_servers
   tags                  = local.tags
+
+  dynamic "encryption" {
+    for_each = var.encryption_enforcement != null ? [var.encryption_enforcement] : []
+    content {
+      enforcement = encryption.value
+    }
+  }
 }
