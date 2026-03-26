@@ -1,9 +1,4 @@
-terraform {
-  required_version = ">= 0.12"
-  required_providers {
-    azurerm = ">= 3.51.0"
-  }
-}
+# Terraform version and provider pins are in providers.tf
 
 locals {
   module_tag = {
