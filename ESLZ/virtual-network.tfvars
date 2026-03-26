@@ -1,3 +1,37 @@
+# -----------------------------------------------------------------------------
+# MIGRATION GUIDE: v1 → v2 (ESLZ)
+# -----------------------------------------------------------------------------
+# Old (v1) .tfvars — a flat `network` object:
+#
+#   network = {
+#     vnet        = ["VNETIP.0/24"]
+#     dns_servers = ["10.150.17.12", "10.150.17.13"]
+#   }
+#
+# Migration steps:
+#   1. Delete the old `network = { ... }` block from your .tfvars.
+#   2. Add a `virtual_networks` map entry below.
+#   3. Use the old userDefinedString value (e.g. "${group}_${project}") as the map key.
+#   4. Move `network.vnet`        → address_space  (list of CIDR strings)
+#      Move `network.dns_servers` → dns_servers     (list of IP strings, keep commented if unused)
+#      Move `resource_group`      → resource_group  (string key into resource_groups_all)
+#
+#   Before:
+#     network = {
+#       vnet        = ["10.10.0.0/24"]
+#       dns_servers = ["10.150.17.12", "10.150.17.13"]
+#     }
+#
+#   After:
+#     virtual_networks = {
+#       MyGroup_MyProject = {              # was: userDefinedString = "${var.group}_${var.project}"
+#         resource_group = "Network"      # was: resource_group = local.resource_groups_L1.Network
+#         address_space  = ["10.10.0.0/24"]  # was: network.vnet
+#         dns_servers    = ["10.150.17.12", "10.150.17.13"]  # was: network.dns_servers
+#       }
+#     }
+# -----------------------------------------------------------------------------
+
 virtual_networks = {
   NetworkHUB = {                      # Key becomes the userDefinedString in the name
     resource_group = "Network"        # Required: key from resource_groups map
