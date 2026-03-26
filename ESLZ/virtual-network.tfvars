@@ -8,9 +8,6 @@ virtual_networks = {
     # Optional: VNet-level encryption (AllowUnencrypted is currently the only GA value)
     # encryption_enforcement = "AllowUnencrypted"
 
-    # Optional: enable VM protection for all subnets
-    # vm_protection_enabled = false
-
     # Optional: BGP community — format "<as-number>:<community-value>" (MS ASN is always 12076)
     # bgp_community = "12076:20000"
 
