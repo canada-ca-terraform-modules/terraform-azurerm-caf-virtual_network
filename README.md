@@ -68,6 +68,49 @@ terraform fmt -recursive && terraform init -backend=false && terraform validate 
 GitHub Actions workflow at `.github/workflows/test.yml` runs fmt, init, validate, and test on every PR — **no Azure credentials needed** (uses `mock_provider`).
 
 <!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_address_space"></a> [address\_space](#input\_address\_space) | List of address prefixes for the VNet (legacy; use virtual\_network.address\_space) | `list(string)` | `null` | no |
+| <a name="input_dns_servers"></a> [dns\_servers](#input\_dns\_servers) | List of DNS server IP addresses (legacy; use virtual\_network.dns\_servers) | `list(string)` | `null` | no |
+| <a name="input_encryption_enforcement"></a> [encryption\_enforcement](#input\_encryption\_enforcement) | Encryption enforcement for the VNet (legacy; use virtual\_network.encryption\_enforcement) | `string` | `null` | no |
+| <a name="input_env"></a> [env](#input\_env) | (Required) Environment prefix used in the CAF naming convention (e.g. Dev, Prod, ScTc) | `string` | n/a | yes |
+| <a name="input_maxLength"></a> [maxLength](#input\_maxLength) | Maximum length of the resource name generated (legacy; unchanged default 64) | `number` | `64` | no |
+| <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | Resource group object (legacy; use virtual\_network.resource\_group + resource\_groups) | `any` | `null` | no |
+| <a name="input_resource_groups"></a> [resource\_groups](#input\_resource\_groups) | Map of resource group objects keyed by logical name (name, location, id) | `any` | `{}` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources | `map(string)` | `{}` | no |
+| <a name="input_userDefinedString"></a> [userDefinedString](#input\_userDefinedString) | (Required) UserDefinedString portion of the resource name | `string` | n/a | yes |
+| <a name="input_virtual_network"></a> [virtual\_network](#input\_virtual\_network) | (Required) Virtual network configuration object. See ESLZ/virtual-network.tfvars for all supported keys. | `any` | `{}` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_virtual_network"></a> [virtual\_network](#output\_virtual\_network) | Returns the virtual\_network object created |
 <!-- END_TF_DOCS -->
 
 
