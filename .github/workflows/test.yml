@@ -1,54 +1,34 @@
-name: test module
+# No Azure credentials needed — mock_provider intercepts all API calls
+name: Terraform CI
 
 on:
   push:
-    branches:
-      - dev
-      - master
-
-env:
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
 
 jobs:
-  module_test_deploy:
-    name: module_test_deploy
+  terraform:
+    name: Terraform Validate & Test
     runs-on: ubuntu-latest
-    container:
-      image: sscspccloudnuage/rover:2011.0210
-      options: --user 0
-
-    strategy:
-      fail-fast: false
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
 
-      - name: Setup context
-        id: context
-        run: |
-          ln -s ${GITHUB_WORKSPACE} /tf/caf
-        #  echo ${{github.ref}}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.1.2
+        with:
+          terraform_version: "~>1.9"
 
-      - name: Login to azure
-        run: |
-          az login --service-principal -u '${{ env.ARM_CLIENT_ID }}' -p '${{ env.ARM_CLIENT_SECRET }}' --tenant '${{ env.ARM_TENANT_ID }}'
-        #  az account set --subscription "${{ env.ARM_SUBSCRIPTION_ID }}"
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
 
-      - name: Terraform version
-        run: |
-          terraform version
+      - name: Terraform Init
+        run: terraform init -backend=false
 
-      - name: Deploy module test
-        run: |
-          cd /tf/caf/test
-          terraform init
-          terraform apply -auto-approve
+      - name: Terraform Validate
+        run: terraform validate
 
-      - name: Destroy module test
-        if: ${{ always() }}
-        run: |
-          cd /tf/caf/test
-          terraform destroy -auto-approve
+      - name: Terraform Test
+        run: terraform test
