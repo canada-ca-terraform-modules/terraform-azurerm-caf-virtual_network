@@ -16,9 +16,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@v4.2.2
         with:
-          ref: ${{ github.event.pull_request.base.ref }}
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Extract version from ESLZ/virtual-network.tf
         id: version
@@ -50,7 +50,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
-          TARGET_BRANCH: ${{ github.event.pull_request.base.ref }}
+          TARGET_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         run: |
           NOTES="$PR_BODY"
           if [ -z "$NOTES" ]; then
@@ -61,4 +61,4 @@ jobs:
           gh release create "$VERSION" \
             --title "$VERSION" \
             --notes-file /tmp/release-notes.md \
-            --target "$TARGET_BRANCH"
+            --target "$TARGET_SHA"
