@@ -9,6 +9,10 @@ locals {
     var.resource_group
   )
 
+  # Allow explicit name override while preserving the generated legacy name by default.
+  generated_name = local.name
+  vnet_name      = try(var.virtual_network.name, null) != null ? var.virtual_network.name : (var.name != null ? var.name : local.generated_name)
+
   # ---------------------------------------------------------------------------
   # Network config: ESLZ config object takes precedence, legacy vars as fallback
   # ---------------------------------------------------------------------------

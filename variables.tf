@@ -26,6 +26,12 @@ variable "virtual_network" {
   default     = {}
 }
 
+variable "name" {
+  description = "Optional explicit virtual network name override (legacy-style input); use virtual_network.name in ESLZ object style"
+  type        = string
+  default     = null
+}
+
 # ---------------------------------------------------------------------------
 # Legacy variables — kept for backward compatibility; prefer virtual_network.xxx
 # ---------------------------------------------------------------------------
