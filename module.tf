@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "vnet" {
-  name                           = local.name
+  name                           = local.vnet_name
   location                       = local.resource_group_obj.location
   resource_group_name            = local.resource_group_obj.name
   address_space                  = local.address_space

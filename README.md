@@ -14,7 +14,7 @@ variable "virtual_networks" {
 }
 
 module "virtual-network" {
-  source   = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-virtual_network.git?ref=v2.0.0"
+  source   = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-virtual_network.git?ref=v2.1.0"
   for_each = var.virtual_networks
 
   userDefinedString = each.key
@@ -30,6 +30,7 @@ module "virtual-network" {
 ```hcl
 virtual_networks = {
   NetworkHUB = {
+    # name           = "scdccnr-networkhub-vnet" # Optional explicit name override
     resource_group = "Network"              # Required: key from resource_groups map
     address_space  = ["10.10.0.0/16"]       # Required
 
@@ -47,7 +48,7 @@ virtual_networks = {
 }
 ```
 
-## New arguments (azurerm >= 4.x)
+## New arguments (azurerm >= 5.0.1 target)
 
 | Key | Type | Description |
 |---|---|---|
@@ -65,7 +66,7 @@ terraform fmt -recursive && terraform init -backend=false && terraform validate 
 
 ## CI
 
-GitHub Actions workflow at `.github/workflows/test.yml` runs fmt, init, validate, and test on every PR — **no Azure credentials needed** (uses `mock_provider`).
+GitHub Actions workflow at `.github/workflows/terraform-ci.yml` runs fmt, init, validate, test, and tflint on every PR — **no Azure credentials needed** (uses `mock_provider`).
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -73,13 +74,13 @@ GitHub Actions workflow at `.github/workflows/test.yml` runs fmt, init, validate
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 5.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 5.0 |
 
 ## Modules
 
@@ -100,6 +101,7 @@ No modules.
 | <a name="input_encryption_enforcement"></a> [encryption\_enforcement](#input\_encryption\_enforcement) | Encryption enforcement for the VNet (legacy; use virtual\_network.encryption\_enforcement) | `string` | `null` | no |
 | <a name="input_env"></a> [env](#input\_env) | (Required) Environment prefix used in the CAF naming convention (e.g. Dev, Prod, ScTc) | `string` | n/a | yes |
 | <a name="input_maxLength"></a> [maxLength](#input\_maxLength) | Maximum length of the resource name generated (legacy; unchanged default 64) | `number` | `64` | no |
+| <a name="input_name"></a> [name](#input\_name) | Optional explicit virtual network name override (legacy-style input); use virtual\_network.name in ESLZ object style | `string` | `null` | no |
 | <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | Resource group object (legacy; use virtual\_network.resource\_group + resource\_groups) | `any` | `null` | no |
 | <a name="input_resource_groups"></a> [resource\_groups](#input\_resource\_groups) | Map of resource group objects keyed by logical name (name, location, id) | `any` | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources | `map(string)` | `{}` | no |

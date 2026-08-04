@@ -33,7 +33,8 @@
 # -----------------------------------------------------------------------------
 
 virtual_networks = {
-  NetworkHUB = {                      # Key becomes the userDefinedString in the name
+  NetworkHUB = { # Key becomes the userDefinedString in the name
+    # name           = "scdccnr-networkhub-vnet" # Optional: explicit VNet name override
     resource_group = "Network"        # Required: key from resource_groups map
     address_space  = ["10.10.0.0/16"] # Required: one or more CIDR prefixes
 

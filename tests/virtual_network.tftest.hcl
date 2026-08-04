@@ -105,6 +105,48 @@ run "with_encryption" {
 }
 
 # ---------------------------------------------------------------------------
+# with_bgp_community
+# bgp_community forwarded correctly from config object
+# ---------------------------------------------------------------------------
+run "with_bgp_community" {
+  command = plan
+
+  variables {
+    virtual_network = {
+      resource_group = "Network"
+      address_space  = ["10.10.0.0/16"]
+      bgp_community  = "12076:20000"
+    }
+  }
+
+  assert {
+    condition     = azurerm_virtual_network.vnet.bgp_community == "12076:20000"
+    error_message = "bgp_community must match configured value"
+  }
+}
+
+# ---------------------------------------------------------------------------
+# with_edge_zone
+# edge_zone forwarded correctly from config object
+# ---------------------------------------------------------------------------
+run "with_edge_zone" {
+  command = plan
+
+  variables {
+    virtual_network = {
+      resource_group = "Network"
+      address_space  = ["10.10.0.0/16"]
+      edge_zone      = "microsoftlosangeles1"
+    }
+  }
+
+  assert {
+    condition     = azurerm_virtual_network.vnet.edge_zone == "microsoftlosangeles1"
+    error_message = "edge_zone must match configured value"
+  }
+}
+
+# ---------------------------------------------------------------------------
 # with_new_args
 # flow_timeout_in_minutes and private_endpoint_vnet_policies are set correctly
 # ---------------------------------------------------------------------------
@@ -128,6 +170,56 @@ run "with_new_args" {
   assert {
     condition     = azurerm_virtual_network.vnet.private_endpoint_vnet_policies == "Basic"
     error_message = "private_endpoint_vnet_policies must be set to Basic"
+  }
+}
+
+# ---------------------------------------------------------------------------
+# with_ddos_protection_plan
+# ddos_protection_plan block rendered with configured id/enable
+# ---------------------------------------------------------------------------
+run "with_ddos_protection_plan" {
+  command = plan
+
+  variables {
+    virtual_network = {
+      resource_group = "Network"
+      address_space  = ["10.10.0.0/16"]
+      ddos_protection_plan = {
+        id     = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-network-test/providers/Microsoft.Network/ddosProtectionPlans/plan-test"
+        enable = true
+      }
+    }
+  }
+
+  assert {
+    condition     = length(azurerm_virtual_network.vnet.ddos_protection_plan) == 1
+    error_message = "ddos_protection_plan block must be emitted when configured"
+  }
+
+  assert {
+    condition     = azurerm_virtual_network.vnet.ddos_protection_plan[0].enable == true
+    error_message = "ddos_protection_plan.enable must match configured value"
+  }
+}
+
+# ---------------------------------------------------------------------------
+# explicit_name_override
+# explicit virtual_network.name override takes precedence over generated name
+# ---------------------------------------------------------------------------
+run "explicit_name_override" {
+  command = plan
+
+  variables {
+    virtual_network = {
+      name           = "custom-existing-vnet-name"
+      resource_group = "Network"
+      address_space  = ["10.10.0.0/16"]
+    }
+  }
+
+  assert {
+    condition     = azurerm_virtual_network.vnet.name == "custom-existing-vnet-name"
+    error_message = "virtual_network.name must override generated name"
   }
 }
 

@@ -61,4 +61,9 @@ run "upgrade_plan_no_replacement" {
     condition     = azurerm_virtual_network.vnet.flow_timeout_in_minutes == 10
     error_message = "flow_timeout_in_minutes must be set in upgraded plan"
   }
+
+  assert {
+    condition     = azurerm_virtual_network.vnet.private_endpoint_vnet_policies == "Basic"
+    error_message = "private_endpoint_vnet_policies must be set in upgraded plan"
+  }
 }

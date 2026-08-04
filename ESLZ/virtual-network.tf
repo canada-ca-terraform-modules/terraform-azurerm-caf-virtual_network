@@ -79,6 +79,10 @@
 #   }
 # -----------------------------------------------------------------------------
 
+terraform {
+  required_version = ">= 1.9"
+}
+
 variable "virtual_networks" {
   description = "Map of virtual networks to deploy. Each key becomes the userDefinedString."
   type        = any
@@ -86,7 +90,7 @@ variable "virtual_networks" {
 }
 
 module "virtual-network" {
-  source   = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-virtual_network.git?ref=v2.0.0"
+  source   = "github.com/canada-ca-terraform-modules/terraform-azurerm-caf-virtual_network.git?ref=v2.1.0"
   for_each = var.virtual_networks
 
   userDefinedString = each.key

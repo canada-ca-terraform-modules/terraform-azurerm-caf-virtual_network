@@ -3,15 +3,13 @@
 *.tfstate
 *.tfstate.*
 *.tfplan
-*.tfstate.lock.info
-*.stackdump
-errored.tfstate
 crash.log
 crash.*.log
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+*.tfvars
 *.tfvars.json
 !ESLZ/*.tfvars
 .idea/
