@@ -29,7 +29,7 @@ provider "azurerm" {
 module "virtual_network" {
   # PR code and baseline code are two on-disk checkouts of this same repo,
   # not two resolved git refs - no pinned ?ref, no version toggle here.
-  # (touch to satisfy live-test.yml's test/live/** path filter on this PR)
+  # (touch to re-trigger live-test.yml's test/live/** path filter on this push)
   source = "../../"
 
   env               = var.env

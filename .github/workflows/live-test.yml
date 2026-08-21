@@ -74,14 +74,14 @@ jobs:
         working-directory: baseline/test/live
         run: |
           terraform init -backend-config="path=${LIVE_TEST_STATE}"
-          terraform apply -auto-approve -var-file=config/key_vault.tfvars
+          terraform apply -auto-approve -var-file=config/virtual_network.tfvars
 
       - name: PR plan
         id: tf_plan
         working-directory: pr/test/live
         run: |
           terraform init -backend-config="path=${LIVE_TEST_STATE}"
-          terraform plan -var-file=config/key_vault.tfvars -out=tfplan
+          terraform plan -var-file=config/virtual_network.tfvars -out=tfplan
           terraform show -json tfplan > plan.json
 
       - name: PR apply
@@ -109,7 +109,7 @@ jobs:
         working-directory: pr/test/live
         run: |
           terraform init -backend-config="path=${LIVE_TEST_STATE}"
-          terraform destroy -auto-approve -var-file=config/key_vault.tfvars
+          terraform destroy -auto-approve -var-file=config/virtual_network.tfvars
 
       - name: Fail on destroy/replace
         if: steps.classify.outputs.classification == 'block'
