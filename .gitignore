@@ -12,6 +12,8 @@ override.tf.json
 *.tfvars
 *.tfvars.json
 !ESLZ/*.tfvars
+# keep the tracked live-test fixture
+!test/live/config/*.tfvars
 .idea/
 .vscode/
 *.swp
